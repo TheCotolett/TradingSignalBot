@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discoveryserver:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+ 
+spring:
+  application:
+    name: spring-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: serviceMicro1
+        uri: lb://MICRO1
+        predicates:
+        - Path=/micro1/**
+

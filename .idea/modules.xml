@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/CryptoCasino-be.iml" filepath="$PROJECT_DIR$/.idea/CryptoCasino-be.iml" />
+      <module fileurl="file://$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/discoveryserver/discoveryserver.iml" filepath="$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/discoveryserver/discoveryserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/spring-gateway/gateway.iml" filepath="$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/spring-gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/crypto/micro1.iml" filepath="$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/crypto/micro1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/microservice-template.iml" filepath="$PROJECT_DIR$/contrader_projects-eathealthy-be-77745f0f0a4c/microservice-template.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,69 @@
+version: '3.5'
+
+x-common-variables: &env
+  SPRING_PROFILES_ACTIVE: compose
+
+services:
+  discoveryserver:
+    build:
+      context: ./
+      dockerfile: ./discoveryserver/Dockerfile
+    image: test.skilldo.org:8191/formazione/microservizi/ds:latest
+    restart: always
+    ports:
+      - 8772:8761
+  gateway:
+    build:
+      context: ./
+      dockerfile: ./spring-gateway/Dockerfile
+    image: test.skilldo.org:8191/formazione/microservizi/gateway:latest
+    restart: always
+    environment:
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discoveryserver:8761/eureka/
+      <<: *env
+    depends_on:
+      - discoveryserver # Questo servizio dipende dal discoveryServer. Starterà prima il CONTAINER del discoveryServer e poi il gateway
+    ports:
+      - 8094:8080
+
+  # App backend service
+  micro1:
+    # Configurazioni per buildare il docker image del microservizio
+    build:
+      context: ./
+      dockerfile: ./microservizio1/Dockerfile
+    image: test.skilldo.org:8191/formazione/microservizi/micro1:latest #nome immagine docker
+ # Questo comando inoltra la porta esposta dal container 8080 (destra) alla porta 8080 del computer host (sinistra)
+    restart: always #riavvio continuo del microservizio
+    depends_on:
+      - db1 # Questo servizio dipende dal db. Starterà prima il CONTAINER del db e poi il microservizio
+      - discoveryserver # Questo servizio dipende dal discoveryServer. Starterà prima il CONTAINER del discoveryServer e poi il microservizio
+    environment: # Sovrascrive le variabili d'ambiente al servizio (application.properties)
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://discoveryserver:8761/eureka/ #collegato al network del discoveryServer
+      SPRING_DATASOURCE_URL: jdbc:mysql://db1:3306/micro1?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false #collegato al network del db1
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      <<: *env
+
+  # Database Service (Mysql)
+  db1:
+    image: mysql:8.0.28
+    ports:
+      - "3316:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: micro1
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    volumes:
+      - db1-data:/var/lib/mysql
+
+# Volumes
+volumes:
+  db1-data:
+#
+#docker-compose up
+#docker-compose down (stoppa tutta l'applicazione)
+#docker exec -ti nomeContainer /bin/bash
+#docker-compose down --remove-orphans -v (toglie ogni minima immagine, container e volume)
