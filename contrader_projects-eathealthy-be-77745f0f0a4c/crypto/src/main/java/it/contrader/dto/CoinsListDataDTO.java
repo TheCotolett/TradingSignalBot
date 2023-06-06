@@ -1,15 +1,15 @@
 package it.contrader.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import it.contrader.model.Coin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IndicatorData {
-    private Day day;
+@Data
+public class CoinsListDataDTO {
+    private List<Coin> coinsResponse;
 }

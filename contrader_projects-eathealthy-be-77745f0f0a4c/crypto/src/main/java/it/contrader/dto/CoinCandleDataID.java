@@ -1,12 +1,17 @@
 package it.contrader.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.time.LocalDate;
+
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmaDTO {
-    private Float value;
+@Data
+public class CoinCandleDataID {
+    private String symbol;
+    private LocalDate date;
 }
