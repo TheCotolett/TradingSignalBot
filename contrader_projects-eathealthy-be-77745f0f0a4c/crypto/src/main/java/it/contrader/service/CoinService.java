@@ -2,7 +2,6 @@ package it.contrader.service;
 
 import it.contrader.dto.CoinCandleDataID;
 import it.contrader.dto.CoinGeckoDataDTO;
-import it.contrader.dto.CoinsListDataDTO;
 import it.contrader.mapper.CoinCandleDataConverter;
 import it.contrader.model.Coin;
 import it.contrader.model.CoinCandleData;
@@ -11,12 +10,11 @@ import it.contrader.repository.CoinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Thread.sleep;
 
@@ -36,6 +34,8 @@ public class CoinService {
         List<Coin> coinList = coinRepository.findAll();
         LocalDate today = LocalDate.now();
         LocalDate date;
+        int prog_max = days * n_of_coins;
+        AtomicInteger prog = new AtomicInteger();
 
         coinList.stream()
                 .limit(n_of_coins)
@@ -45,7 +45,7 @@ public class CoinService {
                     while(i <= days){
                         LocalDate idate= today.minusDays(i);
                         String fixed2 = idate.getDayOfMonth()+"-"+idate.getMonthValue()+"-"+idate.getYear()+"&localization=false";
-
+                        prog.getAndIncrement();
                         if (dataRepository.findById(CoinCandleDataID.builder().date(idate.minusDays(1)).symbol(coin.getSymbol()).build()).isEmpty()){
                             CoinGeckoDataDTO coinGeckoDataDTO = restTemplate.getForObject(
                                     fixed1+fixed2
@@ -71,6 +71,7 @@ public class CoinService {
                             }
                         } else {System.err.println("SKIPPING: data alredy exists");}
                         i++;
+                        System.out.println("PROGRESS: "+prog.toString()+"/"+prog_max);
                     }
                 })
         ;
