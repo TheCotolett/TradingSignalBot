@@ -43,7 +43,7 @@ public class IndicatorService {
 
         double smoothingFactor = 2.0 / (value + 1.0);
         LocalDate startDate = LocalDate.now().minusDays(value+1);
-        List<CoinCandleData> coinCandleData = dataRepository.findBySymbolAndDateBetweenOrderByDateAsc(symbol, startDate, LocalDate.now());
+        List<CoinCandleData> coinCandleData = dataRepository.findBySymbolOrderByDateAsc(symbol);
 
         System.err.println(coinCandleData.size());
 

@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface CoinCandleDataRepository extends MongoRepository<CoinCandleData, CoinCandleDataID> {
     List<CoinCandleData> findBySymbolAndDateBetweenOrderByDateAsc(String symbol, LocalDate start_date, LocalDate end_date);
+    List<CoinCandleData> findBySymbolOrderByDateAsc(String symbol);
 }
