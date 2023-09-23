@@ -20,4 +20,5 @@ public class Coin {
     private String symbol;
     private String name;
     private String img_url;
+    private int market_cap_rank;
 }

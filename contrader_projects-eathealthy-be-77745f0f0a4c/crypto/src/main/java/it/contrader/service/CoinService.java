@@ -1,12 +1,13 @@
 package it.contrader.service;
 
-import it.contrader.dto.CoinCandleDataID;
-import it.contrader.dto.CoinGeckoDataDTO;
+import it.contrader.dto.coingecko.CoinCandleDataID;
+import it.contrader.dto.coingecko.CoinGeckoDataDTO;
 import it.contrader.mapper.CoinCandleDataConverter;
 import it.contrader.model.Coin;
 import it.contrader.model.CoinCandleData;
 import it.contrader.repository.CoinCandleDataRepository;
 import it.contrader.repository.CoinRepository;
+import it.contrader.utils.BANNED_COINS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestOperations;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestOperations;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.Thread.sleep;
@@ -71,7 +73,7 @@ public class CoinService {
                             }
                         } else {System.err.println("SKIPPING: data alredy exists");}
                         i++;
-                        System.out.println("PROGRESS: "+prog.toString()+"/"+prog_max);
+                        
                     }
                 })
         ;
@@ -119,7 +121,13 @@ public class CoinService {
 
         Arrays.stream(coinsListDataDTO)
                 .forEach( coin -> {
-                    coinRepository.save(coin);
+                    AtomicBoolean flag= new AtomicBoolean(true);
+                    BANNED_COINS.COINS.stream().forEach( bc ->{
+                        if (coin.getSymbol().equals(bc))
+                            flag.set(false);
+                    });
+                    if(flag.get())
+                        coinRepository.save(coin);
                 });
     }
 }

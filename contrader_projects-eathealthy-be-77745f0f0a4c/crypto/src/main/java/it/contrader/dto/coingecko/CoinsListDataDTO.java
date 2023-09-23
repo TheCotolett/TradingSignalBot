@@ -1,14 +1,15 @@
-package it.contrader.dto;
+package it.contrader.dto.coingecko;
 
+import it.contrader.model.Coin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class BinanceResponse {
-    private String symbol;
-    private Float price;
+@Data
+public class CoinsListDataDTO {
+    private List<Coin> coinsResponse;
 }

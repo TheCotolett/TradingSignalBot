@@ -1,4 +1,4 @@
-package it.contrader.dto;
+package it.contrader.dto.coingecko;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,13 +8,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class CoinGeckoDataDTO {
-    private String id;
+public class CoinCandleDataID {
     private String symbol;
     private LocalDate date;
-    private MarketData market_data;
-
 }

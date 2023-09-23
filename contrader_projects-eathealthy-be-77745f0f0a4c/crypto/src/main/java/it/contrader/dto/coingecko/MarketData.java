@@ -1,4 +1,4 @@
-package it.contrader.dto;
+package it.contrader.dto.coingecko;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

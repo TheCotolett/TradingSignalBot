@@ -1,6 +1,6 @@
 package it.contrader.repository;
 
-import it.contrader.dto.CoinCandleDataID;
+import it.contrader.dto.coingecko.CoinCandleDataID;
 import it.contrader.model.CoinCandleData;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

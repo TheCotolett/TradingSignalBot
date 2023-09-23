@@ -1,11 +1,16 @@
 package it.contrader;
 
+import it.contrader.utils.SignalAnalyzer;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -30,34 +35,17 @@ public class SpringWebApplication {
 
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
+		ClientHttpRequestFactory requestFactory = new
+				HttpComponentsClientHttpRequestFactory(HttpClients.createDefault());
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+		return restTemplate;
 	}
 
-	/*@Bean
-	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+	@Bean
+	public CommandLineRunner run(SignalAnalyzer analyzer) throws Exception {
 		return args -> {
-			int i=1;
-			float tot=0;
-			String fixed1 = "https://api.coingecko.com/api/v3/coins/vethor-token/history?date=";
-			String fixed2 = "-04-2023&localization=false";
-			List<Float> list = new ArrayList<>();
-			do {
-				String url= fixed1+i+fixed2;
-				System.out.println(url+" "+i);
-				CoinGeckoDataDTO coinGeckoDataDTO = restTemplate.getForObject(
-						url
-							, CoinGeckoDataDTO.class
-				);
-				i++;
-				tot = tot +coinGeckoDataDTO.getMarket_data().getCurrent_price().getUsd();
-				list.add(coinGeckoDataDTO.getMarket_data().getCurrent_price().getUsd());
-
-				sleep(1000);
-			} while (i<=30);
-
-
-			System.err.println("\n\nCOINGECKO 30 SMA:\n" + tot/30);
-
+			analyzer.checkTodayRsiSignals();
 		};
-	}*/
+	}
 }

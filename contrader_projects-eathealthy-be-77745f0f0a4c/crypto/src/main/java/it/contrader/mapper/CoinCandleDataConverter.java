@@ -1,6 +1,6 @@
 package it.contrader.mapper;
 
-import it.contrader.dto.CoinGeckoDataDTO;
+import it.contrader.dto.coingecko.CoinGeckoDataDTO;
 import it.contrader.model.CoinCandleData;
 import org.springframework.stereotype.Component;
 
